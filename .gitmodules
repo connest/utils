@@ -1,0 +1,3 @@
+[submodule "Memoize"]
+	path = Memoize
+	url = https://github.com/connest/Memoize
