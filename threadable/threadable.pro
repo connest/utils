@@ -1,16 +1,16 @@
-TEMPLATE = app
-CONFIG -= app_bundle
-CONFIG -= qt
+QT -= gui
 
+CONFIG -= app_bundle
 
 CONFIG += console c++11
-CONFIG += optimize_full
+#CONFIG += optimize_full
 
 QMAKE_CXXFLAGS += -pedantic-errors -Wall -Wextra -Weffc++
-
 
 SOURCES += \
         main.cpp
 
 HEADERS += \
-    xray.h
+    can_used_in_slot.h \
+    in_other_thread.h \
+    worker.h
