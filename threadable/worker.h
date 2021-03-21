@@ -15,7 +15,7 @@ public:
         : QObject(nullptr)
         , InOtherThread(this)
     {
-        std::cout << QThread::currentThreadId() << " Init in main thread..." << std::endl;;
+//        std::cout << QThread::currentThreadId() << " Init in main thread..." << std::endl;;
 
         // Если нужна инициализация внутри потока - подключить слот
         connect(getThread(),    &QThread::started,
@@ -25,10 +25,10 @@ public:
     }
     ~Worker()
     {
-        std::cout << QThread::currentThreadId() << " die" << std::endl;
+//        std::cout << QThread::currentThreadId() << " die" << std::endl;
     }
     void func(const QString& arr) {
-        std::cout << QThread::currentThreadId() << " " << arr.toStdString() << std::endl;
+        std::cout << " ";
     }
 
 public slots:
@@ -39,13 +39,11 @@ public slots:
      */
     void show(CanUsedInSlot c){
 
-        std::cout << QThread::currentThreadId() << " call slot ..." << std::endl;
-
-        if(invokeIfOtherThread("show", c))
+        if(invokeIfOtherThread(&Worker::show, c))
             return ;
 
-        std::cout << QThread::currentThreadId() << " call slot in right thread" << std::endl;
-
+        // Выполняется _нужный_ поток
+        assert(QThread::currentThread() == this->thread());
 
         //Какие-то действия в слоте...
 
@@ -60,7 +58,7 @@ private slots:
       * Например, для создания сокетов и т.п.
       */
      void initInStardedThread() {
-         std::cout << QThread::currentThreadId() << " Init in thread..." << std::endl;
+//         std::cout << QThread::currentThreadId() << " Init in thread..." << std::endl;
      }
 };
 

@@ -1,11 +1,11 @@
 QT -= gui
 
-CONFIG -= app_bundle
 
-CONFIG += console c++11
+CONFIG += console
+CONFIG += c++11
 #CONFIG += optimize_full
 
-QMAKE_CXXFLAGS += -pedantic-errors -Wall -Wextra -Weffc++
+QMAKE_CXXFLAGS += -pedantic-errors -Wall -Wextra
 
 SOURCES += \
         main.cpp

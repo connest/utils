@@ -9,9 +9,6 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    std::cout << QThread::currentThreadId() << " - main thread " << std::endl;
-
-
     // Зарегистрировали свой тип для передачи его в слоты
     qRegisterMetaType<CanUsedInSlot>("CanUsedInSlot");
 
@@ -26,24 +23,28 @@ int main(int argc, char *argv[])
 
     // Вызов слота.
     // ВАЖНО: вызов происходит из этого потока, а _не_ в потоке объекта.
-    // direct call
+    // direct call -> queued call
     // В обычной ситуации - такой вызов слота может привести к гонке данных
     // и хуже...
-    wp->show(cuis);
 
-
-    // Корректное удаление объекта: в _его_ потоке, _после_ всех принятых событий
-    wp->deleteLater();
-
-    // НЕВЕРНО!!! Нельзя делать delete над QObject в другом потоке
-    // delete /*don't do it*/ wp;
+    for(int i=0;i<10000;i++)
+        wp->show(cuis);
 
 
 
-    // Через секунду завершаем программу
-    QTimer::singleShot(1000, [&](){
-        std::cout << "exit ..." << std::endl;
-        a.exit();
+
+    QTimer::singleShot(200, [&]() {
+
+        // TODO: Fix "QThread: Destroyed while thread is still running"
+        // Корректное удаление объекта: в _его_ потоке, _после_ всех принятых событий
+        wp->deleteLater();
+
+        QTimer::singleShot(200, [&]() {
+            qDebug() << "exit";
+
+            a.exit();
+
+        });
     });
 
     return a.exec();
