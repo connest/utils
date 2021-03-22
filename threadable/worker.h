@@ -37,8 +37,8 @@ public slots:
      * @brief show Слот для примера
      * @param c параметр, зарегистрированного метатипа
      */
-    void show(CanUsedInSlot c){
-
+    void show(CanUsedInSlot c)
+    {
         if(invokeIfOtherThread(&Worker::show, c))
             return ;
 
@@ -50,6 +50,58 @@ public slots:
         func(QString::number(c.a));
     }
 
+
+    // Работа с перегружеными слотами
+
+    /**
+     * @brief func_for_overload Слот который имеет перегрузку по параметрам
+     * @param a параметр тип 1
+     */
+    void func_for_overload(int a) {
+        //                              vvvvv - перечисление типов параметров функции
+        if(invokeIfOtherThread(QOverload<int>::of(&Worker::func_for_overload), a))
+            return ;
+
+        // Выполняется _нужный_ поток
+        assert(QThread::currentThread() == this->thread());
+
+        //действия 1
+    }
+
+    /**
+     * @brief func_for_overload Слот который имеет перегрузку по параметрам
+     * @param b параметр тип 2
+     */
+    void func_for_overload(QByteArray b)
+    {
+
+        //                              vvvvvvvvvvvv - перечисление типов параметров функции
+        if(invokeIfOtherThread(QOverload<QByteArray>::of(&Worker::func_for_overload), b))
+            return ;
+
+        // Выполняется _нужный_ поток
+        assert(QThread::currentThread() == this->thread());
+
+        //действия 2
+    }
+
+    /**
+     * @brief func_for_overload Слот который имеет перегрузку по параметрам
+     * @param a параметр тип 1
+     * @param b параметр тип 3
+     */
+    void func_for_overload(int a, double b)
+    {
+
+        //                              vvvvvvvvvvvv - перечисление типов параметров функции
+        if(invokeIfOtherThread(QOverload<int, double>::of(&Worker::func_for_overload), a, b))
+            return ;
+
+        // Выполняется _нужный_ поток
+        assert(QThread::currentThread() == this->thread());
+
+        //действия 3
+    }
 
 private slots:
      /**
