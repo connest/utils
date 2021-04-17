@@ -1,3 +1,6 @@
 [submodule "Memoize"]
 	path = Memoize
 	url = https://github.com/connest/Memoize
+[submodule "CircularBuffer"]
+	path = CircularBuffer
+	url = https://github.com/connest/CircularBuffer

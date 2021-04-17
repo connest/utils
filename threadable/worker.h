@@ -15,7 +15,6 @@ public:
         : QObject(nullptr)
         , InOtherThread(this)
     {
-//        std::cout << QThread::currentThreadId() << " Init in main thread..." << std::endl;;
 
         // Если нужна инициализация внутри потока - подключить слот
         connect(getThread(),    &QThread::started,
@@ -25,7 +24,6 @@ public:
     }
     ~Worker()
     {
-//        std::cout << QThread::currentThreadId() << " die" << std::endl;
     }
     void func(const QString& arr) {
         std::cout << " ";
@@ -110,7 +108,6 @@ private slots:
       * Например, для создания сокетов и т.п.
       */
      void initInStardedThread() {
-//         std::cout << QThread::currentThreadId() << " Init in thread..." << std::endl;
      }
 };
 
